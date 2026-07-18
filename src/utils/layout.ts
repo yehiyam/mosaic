@@ -87,6 +87,30 @@ export function getGridWidth(options: {
   return tile.width * options.columns + Math.max(0, options.columns - 1) * options.gapMm;
 }
 
+export function getMaxColumns(options: {
+  pageSize: PageSizeName;
+  orientation: Orientation;
+  marginMm: number;
+  gapMm: number;
+  imageWidthMm: number;
+  imageHeightMm: number;
+  mask: MaskShape;
+  borderStyle: BorderStyleOption;
+  borderWidthMm: number;
+}): number {
+  const printableWidth = getPrintableWidth(options.pageSize, options.orientation, options.marginMm);
+  const tile = getTileOuterSize(
+    options.imageWidthMm,
+    options.imageHeightMm,
+    options.mask,
+    options.borderStyle,
+    options.borderWidthMm,
+  );
+  const tileAndGap = tile.width + options.gapMm;
+  if (tileAndGap <= 0) return 1;
+  return Math.max(1, Math.floor((printableWidth + options.gapMm) / tileAndGap));
+}
+
 export function getWidthOverflow(options: {
   pageSize: PageSizeName;
   orientation: Orientation;

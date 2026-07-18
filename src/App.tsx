@@ -3,6 +3,7 @@ import { useRegisterSW } from 'virtual:pwa-register/react';
 import { clearProject, loadProject, saveProject } from './storage/projectDb';
 import {
   getGridWidth,
+  getMaxColumns,
   getMaskRadius,
   getOrientedPageSize,
   getPresetLabel,
@@ -304,13 +305,20 @@ export default function App() {
   const showIosGuide = !beforeInstallPrompt && !isStandalone && !iosGuideDismissed && isAppleMobile();
 
   const updateSettings = <Key extends keyof EditorSettings>(key: Key, value: EditorSettings[Key]) => {
-    setProject((currentProject) => ({
-      ...currentProject,
-      settings: {
+    setProject((currentProject) => {
+      const updated: EditorSettings = {
         ...currentProject.settings,
         [key]: value,
-      },
-    }));
+      };
+      const maxCols = getMaxColumns(updated);
+      return {
+        ...currentProject,
+        settings: {
+          ...updated,
+          columns: Math.min(updated.columns, maxCols),
+        },
+      };
+    });
   };
 
   const handleFiles = (fileList: FileList | File[]) => {
@@ -572,14 +580,21 @@ export default function App() {
                     if (!preset) {
                       return;
                     }
-                    setProject((currentProject) => ({
-                      ...currentProject,
-                      settings: {
+                    setProject((currentProject) => {
+                      const updated: EditorSettings = {
                         ...currentProject.settings,
                         imageWidthMm: preset.width,
                         imageHeightMm: preset.height,
-                      },
-                    }));
+                      };
+                      const maxCols = getMaxColumns(updated);
+                      return {
+                        ...currentProject,
+                        settings: {
+                          ...updated,
+                          columns: Math.min(updated.columns, maxCols),
+                        },
+                      };
+                    });
                   }}
                 >
                   {IMAGE_SIZE_PRESETS.map((preset) => (
