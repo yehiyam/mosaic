@@ -354,6 +354,11 @@ h2 {
     background: transparent;
   }
 
+  .app-layout {
+    display: block;
+    gap: 0;
+  }
+
   .page-preview {
     width: auto !important;
     min-height: 0 !important;
