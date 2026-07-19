@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/mosaic/',
+  base: '/',
   plugins: [
     react(),
     VitePWA({
@@ -21,8 +21,8 @@ export default defineConfig({
         theme_color: '#2563eb',
         background_color: '#f8fafc',
         display: 'standalone',
-        start_url: '/mosaic/',
-        scope: '/mosaic/',
+        start_url: '/',
+        scope: '/',
         icons: [
           {
             src: 'pwa-192x192.png',
