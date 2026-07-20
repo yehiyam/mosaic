@@ -14,6 +14,7 @@
   --accent-soft: #eeecff;
   --text: #172033;
   --text-muted: #667085;
+  --warning: #b45309;
   --surface: rgba(255, 255, 255, 0.88);
   --surface-solid: #fff;
   --surface-subtle: #f8f9fc;
@@ -36,6 +37,7 @@
   --accent-soft: #292543;
   --text: #f1f3f9;
   --text-muted: #aab2c2;
+  --warning: #fbbf24;
   --surface: rgba(24, 29, 42, 0.9);
   --surface-solid: #181d2a;
   --surface-subtle: #202635;
@@ -331,7 +333,7 @@ h2 {
 }
 
 .warning-text {
-  color: #d97706;
+  color: var(--warning);
   font-weight: 600;
 }
 

@@ -344,6 +344,10 @@ export default function App() {
     }));
   };
 
+  const toggleTheme = () => {
+    setTheme((currentTheme) => currentTheme === 'dark' ? 'light' : 'dark');
+  };
+
   const handleFiles = (fileList: FileList | File[]) => {
     const files = Array.from(fileList);
 
@@ -454,7 +458,7 @@ export default function App() {
             type="button"
             className="theme-button"
             aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            onClick={() => setTheme((currentTheme) => currentTheme === 'dark' ? 'light' : 'dark')}
+            onClick={toggleTheme}
           >
             <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
             {theme === 'dark' ? 'Light' : 'Dark'}
