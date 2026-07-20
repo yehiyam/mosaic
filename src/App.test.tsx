@@ -30,6 +30,7 @@ describe('App', () => {
     window.confirm = vi.fn(() => true);
     URL.createObjectURL = vi.fn(() => 'blob:preview');
     URL.revokeObjectURL = vi.fn();
+    window.localStorage.clear();
   });
 
   afterEach(() => {
@@ -73,5 +74,16 @@ describe('App', () => {
 
     await waitFor(() => expect(screen.queryByAltText(/Uploaded image scene\.png/i)).not.toBeInTheDocument());
     expect(clearProject).toHaveBeenCalled();
+  });
+
+  it('toggles dark mode and persists the preference', async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole('button', { name: /Switch to dark mode/i }));
+
+    expect(document.documentElement).toHaveAttribute('data-theme', 'dark');
+    expect(window.localStorage.getItem('mosaic-theme')).toBe('dark');
+    expect(screen.getByRole('button', { name: /Switch to light mode/i })).toBeInTheDocument();
   });
 });

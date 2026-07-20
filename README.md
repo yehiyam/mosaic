@@ -11,6 +11,7 @@ Mosaic is a fully static React + TypeScript PWA for arranging local images into 
 - Configure border style, width, and color
 - Print to A0–A6 paper in portrait or landscape with configurable margins
 - Persist images and editor settings locally in the current browser/device
+- Use a light or dark appearance, with the initial theme following the device preference
 - Install as a PWA on supported Android browsers and on iPhone/iPad via Add to Home Screen
 - Deploy as a static site on GitHub Pages under `/mosaic/`
 

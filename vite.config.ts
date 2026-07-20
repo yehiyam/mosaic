@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
-  base: '/',
+  base: '/mosaic/',
   plugins: [
     react(),
     VitePWA({
@@ -18,11 +18,11 @@ export default defineConfig({
         name: 'Mosaic',
         short_name: 'Mosaic',
         description: 'Arrange local images into printable A-series mosaics.',
-        theme_color: '#2563eb',
+        theme_color: '#f8fafc',
         background_color: '#f8fafc',
         display: 'standalone',
-        start_url: '/',
-        scope: '/',
+        start_url: '/mosaic/',
+        scope: '/mosaic/',
         icons: [
           {
             src: 'pwa-192x192.png',
