@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - copilot/add-dark-mode
   workflow_dispatch:
 
 permissions:

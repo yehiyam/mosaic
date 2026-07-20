@@ -36,7 +36,9 @@ const DEFAULT_PROJECT: ProjectState = {
 };
 
 const IOS_GUIDE_KEY = 'mosaic-ios-install-dismissed';
+const THEME_KEY = 'mosaic-theme';
 const SAVE_DELAY_MS = 400;
+type Theme = 'light' | 'dark';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -57,6 +59,19 @@ function writeDismissedFlag(key: string, dismissed: boolean) {
   } catch {
     // ignore localStorage failures and rely on the current session only
   }
+}
+
+function getInitialTheme(): Theme {
+  try {
+    const storedTheme = window.localStorage.getItem(THEME_KEY);
+    if (storedTheme === 'light' || storedTheme === 'dark') {
+      return storedTheme;
+    }
+  } catch {
+    // fall back to the system preference
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function isStandaloneMode() {
@@ -166,12 +181,30 @@ export default function App() {
   const [beforeInstallPrompt, setBeforeInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
   const [iosGuideDismissed, setIosGuideDismissed] = useState(() => readDismissedFlag(IOS_GUIDE_KEY));
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const hasLoadedProject = useRef(false);
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     offlineReady: [offlineReady, setOfflineReady],
     updateServiceWorker,
   } = useRegisterSW();
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    const browserThemeColor = window.getComputedStyle(document.documentElement)
+      .getPropertyValue('--browser-theme')
+      .trim();
+    if (browserThemeColor) {
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', browserThemeColor);
+    }
+
+    try {
+      window.localStorage.setItem(THEME_KEY, theme);
+    } catch {
+      // keep the preference for the current session
+    }
+  }, [theme]);
 
   useEffect(() => {
     let isCancelled = false;
@@ -313,6 +346,10 @@ export default function App() {
     }));
   };
 
+  const toggleTheme = () => {
+    setTheme((currentTheme) => currentTheme === 'dark' ? 'light' : 'dark');
+  };
+
   const handleFiles = (fileList: FileList | File[]) => {
     const files = Array.from(fileList);
 
@@ -419,6 +456,15 @@ export default function App() {
           </p>
         </div>
         <div className="header-actions screen-only">
+          <button
+            type="button"
+            className="theme-button"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            onClick={toggleTheme}
+          >
+            <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
           <label className="primary-button" htmlFor={fileInputId}>
             Add images
           </label>
