@@ -10,6 +10,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   --accent: #6558d9;
+  --browser-theme: #f8fafc;
   --accent-strong: #5145c5;
   --accent-soft: #eeecff;
   --text: #172033;
@@ -33,6 +34,7 @@
   color: #f1f3f9;
   background: #0c1019;
   --accent: #a59afb;
+  --browser-theme: #111827;
   --accent-strong: #b9b0ff;
   --accent-soft: #292543;
   --text: #f1f3f9;

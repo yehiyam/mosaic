@@ -192,10 +192,12 @@ export default function App() {
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute(
-      'content',
-      theme === 'dark' ? '#111827' : '#f8fafc',
-    );
+    const browserThemeColor = window.getComputedStyle(document.documentElement)
+      .getPropertyValue('--browser-theme')
+      .trim();
+    if (browserThemeColor) {
+      document.querySelector('meta[name="theme-color"]')?.setAttribute('content', browserThemeColor);
+    }
 
     try {
       window.localStorage.setItem(THEME_KEY, theme);
